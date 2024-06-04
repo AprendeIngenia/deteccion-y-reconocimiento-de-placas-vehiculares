@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<annotation>
+  <folder>VOC</folder>
+  <filename>0120.png</filename>
+  <source>
+    <database>roboflow.ai</database>
+  </source>
+  <size>
+    <width>4032</width>
+    <height>3024</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>number plate</name>
+    <bndbox>
+      <xmin>1963</xmin>
+      <ymin>1559</ymin>
+      <xmax>2062</xmax>
+      <ymax>1623</ymax>
+    </bndbox>
+    <polygon>
+      <x1>1963</x1>
+      <y1>1562</y1>
+      <x2>1964</x2>
+      <y2>1609</y2>
+      <x3>1967</x3>
+      <y3>1615</y3>
+      <x4>1976</x4>
+      <y4>1618</y4>
+      <x5>2033</x5>
+      <y5>1620</y5>
+      <x6>2051</x6>
+      <y6>1623</y6>
+      <x7>2058</x7>
+      <y7>1622</y7>
+      <x8>2062</x8>
+      <y8>1618</y8>
+      <x9>2062</x9>
+      <y9>1580</y9>
+      <x10>2060</x10>
+      <y10>1569</y10>
+      <x11>2057</x11>
+      <y11>1565</y11>
+      <x12>2039</x12>
+      <y12>1562</y12>
+      <x13>1969</x13>
+      <y13>1559</y13>
+    </polygon>
+  </object>
+</annotation>
