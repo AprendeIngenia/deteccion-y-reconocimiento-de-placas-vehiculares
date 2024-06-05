@@ -1,6 +1,0 @@
-train: data/vehicle_yolo_format/train/
-val: data/vehicle_yolo_format/val/
-test: data/vehicle_yolo_format/test/
-
-nc: 6
-names: ['bus', 'car', 'microbus', 'motorbike', 'pickup-van', 'truck']
