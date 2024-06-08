@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53b415bb-f84c-494e-b62a-56388bc04614" name="Changes" comment="" />
+    <list default="true" id="53b415bb-f84c-494e-b62a-56388bc04614" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,8 +41,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/M.2/Escritorio/YouTube/Programacion/Vision Python/ReciclajeIA",
+    "git-widget-placeholder": "feat/main-process",
+    "last_opened_file_path": "D:/M.2/Escritorio/YouTube/Programacion/Robotica/Vex/vehicle_plate_recognition/process/vehicle_detection/models",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
