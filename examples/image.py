@@ -8,7 +8,8 @@ from process.main import PlateRecognition
 if __name__ == "__main__":
     processor = PlateRecognition()
     image_path = 'examples/example.jpg'
-    vehicle_image, bbox, vehicle_type, confidence = processor.process_static_image(image_path)
+    vehicle_image, info = processor.process_static_image(image_path, draw=False)
+    print(info)
     cv2.imshow('plate recognition', vehicle_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
