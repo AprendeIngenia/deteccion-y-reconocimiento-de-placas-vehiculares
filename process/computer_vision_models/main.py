@@ -16,16 +16,18 @@ class VehicleDetection:
         self.color = self.models.vehicle_color
 
     def check_vehicle(self, vehicle_image: np.ndarray, mode: bool):
+        clean_image = vehicle_image.copy()
+        rgb_image = cv2.cvtColor(vehicle_image, cv2.COLOR_BGR2RGB)
         detect = False
-        results = self.detection_model(vehicle_image, stream=mode, conf=0.85)
+        results = self.detection_model(rgb_image, stream=mode, conf=0.85)
         for res in results:
             boxes = res.boxes
             for box in boxes:
                 detect = int(box.cls[0])
         if detect is False:
-            return False, results
+            return False, results, clean_image
         else:
-            return True, results
+            return True, results, clean_image
 
     def extract_detection_info(self, vehicle_image: np.ndarray, detect_info: Any):
         height, width, _ = vehicle_image.shape
@@ -51,6 +53,10 @@ class VehicleDetection:
                 conf = math.ceil(box.conf[0])
         return bbox, vehicle_type, conf
 
+    def image_vehicle_crop(self, vehicle_image: np.ndarray, bbox: List[int]):
+        x1, y1, x2, y2 = bbox
+        return vehicle_image[y1:y2, x1:x2]
+
     # draw
     def draw_vehicle_detection(self, vehicle_image: np.ndarray, bbox: List[int], vehicle_type: str, conf: float):
         x1, y1, x2, y2 = bbox
@@ -67,4 +73,7 @@ class PlateSegmentation:
         # segmentation
         self.segmentation_model = YOLO(self.models.plate_model)
         self.segmentation_classes = self.models.plate_classes
+
+    #def check_vehicle_plate(self, crop_vehicle_image: np.ndarray, mode: bool):
+
 

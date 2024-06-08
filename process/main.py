@@ -14,9 +14,11 @@ class PlateRecognition:
 
     def process_vehicular_plate(self, vehicle_image: np.ndarray, stream_mode: bool, draw: bool):
         # step 1: check vehicle
-        check_vehicle, info_vehicle = self.model_detect.check_vehicle(vehicle_image, mode=stream_mode)
+        check_vehicle, info_vehicle, clean_image = self.model_detect.check_vehicle(vehicle_image, mode=stream_mode)
+
         if check_vehicle is False:
             return vehicle_image, 'no vehicle detected'
+
         # step 2: extract info
         vehicle_bbox, vehicle_type, vehicle_conf = self.model_detect.extract_detection_info(vehicle_image, info_vehicle)
 
@@ -24,5 +26,10 @@ class PlateRecognition:
         if draw:
             vehicle_image = self.model_detect.draw_vehicle_detection(vehicle_image, vehicle_bbox, vehicle_type,
                                                                      vehicle_conf)
+        # step 4: crop vehicle
+        image_vehicle_crop = self.model_detect.image_vehicle_crop(vehicle_image, vehicle_bbox)
+
+        # step 5: plate segmentation
+
         return vehicle_image, 'vehicle detected'
 
