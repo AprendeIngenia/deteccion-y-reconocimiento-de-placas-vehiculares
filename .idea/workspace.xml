@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53b415bb-f84c-494e-b62a-56388bc04614" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.pt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/computer_vision_models/models/plate_segmentation.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/process/computer_vision_models/models/plate_segmentation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/process/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/models/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/models/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.pt" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/models/vehicle_detection.pt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/process/vehicle_detection/models/vehicle_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/process/computer_vision_models/models/vehicle_detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,19 +35,27 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2hNhCLY3Xh3rmtIkC7Cq1clRZdG" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feat/main-process",
     "last_opened_file_path": "D:/M.2/Escritorio/YouTube/Programacion/Robotica/Vex/vehicle_plate_recognition/process/vehicle_detection/models",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\M.2\Escritorio\YouTube\Programacion\Robotica\Vex\vehicle_plate_recognition\process\vehicle_detection\models" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -74,5 +84,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
