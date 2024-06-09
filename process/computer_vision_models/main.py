@@ -128,5 +128,16 @@ class PlateSegmentation:
         tmp = img * composite.astype(np.uint8)
         return tmp
 
+    def draw_plate_segmentation(self, vehicle_image: np.ndarray, plate_mask: Any, vehicle_bbox: List[int]) -> np.ndarray:
+        mask = torch.squeeze(plate_mask.data).cpu().numpy() * 255
+        mask = mask.astype(np.uint8)
+        color_mask = cv2.applyColorMap(mask, cv2.COLORMAP_INFERNO)
+        color_mask_resized = cv2.resize(color_mask, (vehicle_bbox[2] - vehicle_bbox[0], vehicle_bbox[3] - vehicle_bbox[1]))
+        blank_mask = np.zeros_like(vehicle_image)
+        blank_mask[vehicle_bbox[1]:vehicle_bbox[3], vehicle_bbox[0]:vehicle_bbox[2]] = color_mask_resized
+        overlay = cv2.addWeighted(vehicle_image, 1, blank_mask, 0.5, 0)
+        return overlay
+
+
 
 

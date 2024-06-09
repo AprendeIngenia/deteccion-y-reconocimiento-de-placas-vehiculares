@@ -39,11 +39,14 @@ class PlateRecognition:
         # step 6: extract plate info
         plate_mask, plate_bbox, plate_conf = self.model_segmentation.extract_plate_info(image_vehicle_crop, info_plate)
 
-        # step 7: process mask
+        if draw:
+            vehicle_image = self.model_segmentation.draw_plate_segmentation(vehicle_image, plate_mask, vehicle_bbox)
+
+        # step 8: process mask
         processed_mask_image = self.model_segmentation.mask_processing(image_vehicle_crop, plate_mask)
 
-        # step 8: crop plate
+        # step 9: crop plate
         image_plate_crop = self.model_segmentation.image_plate_crop(processed_mask_image, plate_bbox)
 
-        return image_plate_crop, 'vehicle detected and plate detected'
+        return vehicle_image, 'vehicle detected and plate detected'
 
