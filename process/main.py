@@ -23,7 +23,7 @@ class PlateRecognition:
         # step 2: extract info
         vehicle_bbox, vehicle_type, vehicle_conf = self.model_detect.extract_detection_info(vehicle_image, info_vehicle)
 
-        # step 3: draw (optional)
+        # step 3: draw detect (optional)
         if draw:
             vehicle_image = self.model_detect.draw_vehicle_detection(vehicle_image, vehicle_bbox, vehicle_type,
                                                                      vehicle_conf)
@@ -39,6 +39,7 @@ class PlateRecognition:
         # step 6: extract plate info
         plate_mask, plate_bbox, plate_conf = self.model_segmentation.extract_plate_info(image_vehicle_crop, info_plate)
 
+        # step 7: draw segmentation (optional)
         if draw:
             vehicle_image = self.model_segmentation.draw_plate_segmentation(vehicle_image, plate_mask, vehicle_bbox)
 
@@ -47,6 +48,8 @@ class PlateRecognition:
 
         # step 9: crop plate
         image_plate_crop = self.model_segmentation.image_plate_crop(processed_mask_image, plate_bbox)
+
+        # step 10: extract ocr
 
         return vehicle_image, 'vehicle detected and plate detected'
 

@@ -6,8 +6,8 @@ from process.main import PlateRecognition
 
 processor = PlateRecognition()
 cap = cv2.VideoCapture(0)
-cap.set(3, 1920)
-cap.set(4, 1080)
+cap.set(3, 1280)
+cap.set(4, 720)
 
 if __name__ == "__main__":
 
