@@ -1,11 +1,12 @@
 import numpy as np
 import cv2
-from process.computer_vision_models.main import VehicleDetection
+from process.computer_vision_models.main import (VehicleDetection, PlateSegmentation)
 
 
 class PlateRecognition:
     def __init__(self):
         self.model_detect = VehicleDetection()
+        self.model_segmentation = PlateSegmentation()
 
     def process_static_image(self, image_path: str, draw: bool):
         # Step 1: Load the image
@@ -30,6 +31,19 @@ class PlateRecognition:
         image_vehicle_crop = self.model_detect.image_vehicle_crop(vehicle_image, vehicle_bbox)
 
         # step 5: plate segmentation
+        check_plate, info_plate = self.model_segmentation.check_vehicle_plate(image_vehicle_crop, mode=stream_mode)
 
-        return vehicle_image, 'vehicle detected'
+        if check_plate is False:
+            return vehicle_image, 'vehicle detected but no plate detected'
+
+        # step 6: extract plate info
+        plate_mask, plate_bbox, plate_conf = self.model_segmentation.extract_plate_info(image_vehicle_crop, info_plate)
+
+        # step 7: process mask
+        processed_mask_image = self.model_segmentation.mask_processing(image_vehicle_crop, plate_mask)
+
+        # step 8: crop plate
+        image_plate_crop = self.model_segmentation.image_plate_crop(processed_mask_image, plate_bbox)
+
+        return image_plate_crop, 'vehicle detected and plate detected'
 

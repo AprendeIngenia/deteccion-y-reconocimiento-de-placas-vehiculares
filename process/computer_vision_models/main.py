@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 import math
-from typing import List, Any
+import torch
+from typing import List, Any, Tuple
 from ultralytics import YOLO
 from process.computer_vision_models.models.config import ConfigModels
 
@@ -15,11 +16,10 @@ class VehicleDetection:
         self.detection_classes = self.models.vehicle_classes
         self.color = self.models.vehicle_color
 
-    def check_vehicle(self, vehicle_image: np.ndarray, mode: bool):
+    def check_vehicle(self, vehicle_image: np.ndarray, mode: bool) -> Tuple[bool, Any, np.ndarray]:
         clean_image = vehicle_image.copy()
-        rgb_image = cv2.cvtColor(vehicle_image, cv2.COLOR_BGR2RGB)
         detect = False
-        results = self.detection_model(rgb_image, stream=mode, conf=0.85)
+        results = self.detection_model(vehicle_image, stream=mode, conf=0.85)
         for res in results:
             boxes = res.boxes
             for box in boxes:
@@ -29,7 +29,7 @@ class VehicleDetection:
         else:
             return True, results, clean_image
 
-    def extract_detection_info(self, vehicle_image: np.ndarray, detect_info: Any):
+    def extract_detection_info(self, vehicle_image: np.ndarray, detect_info: Any) -> Tuple[list, str, float]:
         height, width, _ = vehicle_image.shape
         bbox: List = []
         cls: int = 0
@@ -53,12 +53,12 @@ class VehicleDetection:
                 conf = math.ceil(box.conf[0])
         return bbox, vehicle_type, conf
 
-    def image_vehicle_crop(self, vehicle_image: np.ndarray, bbox: List[int]):
+    def image_vehicle_crop(self, vehicle_image: np.ndarray, bbox: List[int]) -> np.ndarray:
         x1, y1, x2, y2 = bbox
         return vehicle_image[y1:y2, x1:x2]
 
     # draw
-    def draw_vehicle_detection(self, vehicle_image: np.ndarray, bbox: List[int], vehicle_type: str, conf: float):
+    def draw_vehicle_detection(self, vehicle_image: np.ndarray, bbox: List[int], vehicle_type: str, conf: float) -> np.ndarray:
         x1, y1, x2, y2 = bbox
         color = self.color.get(vehicle_type)
         vehicle_info = f'vehicle type: {vehicle_type} {conf*100}%'
@@ -74,6 +74,59 @@ class PlateSegmentation:
         self.segmentation_model = YOLO(self.models.plate_model)
         self.segmentation_classes = self.models.plate_classes
 
-    #def check_vehicle_plate(self, crop_vehicle_image: np.ndarray, mode: bool):
+        self.best_mask = None
+
+    def check_vehicle_plate(self, crop_vehicle_image: np.ndarray, mode: bool) -> Tuple[bool, Any]:
+        segment = None
+        results = self.segmentation_model(crop_vehicle_image, stream=mode, conf=0.85)
+        for res in results:
+            segment = res.masks
+
+        if segment is None:
+            return False, results
+        else:
+            return True, results
+
+    def extract_plate_info(self, crop_vehicle_image: np.ndarray, mask_info: Any) -> Tuple[list, list, float]:
+        height, width, _ = crop_vehicle_image.shape
+        max_confidence = 0
+        best_segment = None
+        best_pos = 0
+        for segment in mask_info:
+            for i, boxes in enumerate(segment.boxes):
+                if boxes.conf[0] > max_confidence:
+                    best_pos = i
+                    best_segment = segment
+                    max_confidence = boxes.conf[0]
+
+        self.best_mask = best_segment.masks[best_pos]
+        best_box = best_segment.boxes[best_pos]
+
+        x1, y1, x2, y2 = best_box.xyxy[0]
+        x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+        x1 = max(0, x1)
+        y1 = max(0, y1)
+        x2 = min(width, x2)
+        y2 = min(height, y2)
+        bbox = [x1, y1, x2, y2]
+
+        return self.best_mask, bbox, max_confidence
+
+    def image_plate_crop(self, crop_vehicle_image: np.ndarray, plate_bbox: List[int]) -> np.ndarray:
+        h, w, _ = crop_vehicle_image.shape
+        offset_x, offset_y = int(w * 0.025), int(h * 0.025)
+        xi, yi, xf, yf = plate_bbox
+        xi, yi, xf, yf = xi - offset_x, yi - offset_y, xf + offset_x, yf + offset_y
+        return crop_vehicle_image[yi:yf, xi:xf]
+
+    def mask_processing(self, crop_plate_image: np.ndarray, plate_mask: Any) -> np.ndarray:
+        h, w, _ = crop_plate_image.shape
+        m = torch.squeeze(plate_mask.data)
+        composite = torch.stack((m, m, m), 2)
+        composite = cv2.resize(composite.cpu().numpy(), (w, h))
+        img = crop_plate_image.astype(np.uint8)
+        tmp = img * composite.astype(np.uint8)
+        return tmp
+
 
 
