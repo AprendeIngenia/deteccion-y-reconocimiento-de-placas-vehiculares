@@ -1,12 +1,14 @@
 import numpy as np
 import cv2
 from process.computer_vision_models.main import (VehicleDetection, PlateSegmentation)
+from process.ocr_extraction.main import TextExtraction
 
 
 class PlateRecognition:
     def __init__(self):
         self.model_detect = VehicleDetection()
         self.model_segmentation = PlateSegmentation()
+        self.process_text_extraction = TextExtraction()
 
     def process_static_image(self, image_path: str, draw: bool):
         # Step 1: Load the image
@@ -49,7 +51,11 @@ class PlateRecognition:
         # step 9: crop plate
         image_plate_crop = self.model_segmentation.image_plate_crop(processed_mask_image, plate_bbox)
 
-        # step 10: extract ocr
+        # step 10: contrast plate
+        image_plate_contrasted = self.process_text_extraction.image_contrast(image_plate_crop)
 
-        return vehicle_image, 'vehicle detected and plate detected'
+        # step 11: text extraction
+        license_plate = self.process_text_extraction.text_extraction(image_plate_contrasted)
+
+        return vehicle_image, f'vehicle detected and plate detected\nplate:{license_plate}'
 
