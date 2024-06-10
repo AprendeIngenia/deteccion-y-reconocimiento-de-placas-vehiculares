@@ -15,15 +15,19 @@ class OcrProcess:
         # easyocr
         self.ocr_detector = easyocr.Reader(['es'], gpu=True)
 
+        self.text_bbox: list = []
+        self.text_extracted: str = ''
+        self.text_confidence: float = 0.0
+
     def text_detection(self, text_image: np.ndarray):
         text_line_detected = self.ocr_detector.readtext(text_image)
         return len(text_line_detected), text_line_detected
 
-    def extractor_text_line(self, img: np.ndarray, text):
-        bbox, _, _ = text
+    def extractor_text_line(self, text) -> Tuple[List[int], str, float]:
+        bbox, self.text_extracted, self.text_confidence = text
         xi, yi, xf, yf = int(bbox[0][0]), int(bbox[0][1]), int(bbox[2][0]), int(bbox[2][1])
-        line_crop = img[yi:yf, xi:xf]
-        return line_crop, xi, yi, xf, yf
+        self.text_bbox = [xi, yi, xf, yf]
+        return self.text_bbox, self.text_extracted, self.text_confidence
 
     def image_to_text(self, img: np.ndarray):
         pixel_values = self.processor(img, return_tensors="pt").pixel_values.to(torch.device("cuda"))

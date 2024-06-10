@@ -16,14 +16,17 @@ class VehicleDetection:
         self.detection_classes = self.models.vehicle_classes
         self.color = self.models.vehicle_color
 
-    def check_vehicle(self, vehicle_image: np.ndarray, mode: bool) -> Tuple[bool, Any, np.ndarray]:
+    def check_vehicle(self, vehicle_image: np.ndarray) -> Tuple[bool, Any, np.ndarray]:
         clean_image = vehicle_image.copy()
         detect = False
-        results = self.detection_model(vehicle_image, stream=mode, conf=0.85)
+        results = self.detection_model(vehicle_image, stream=False, conf=0.60)
         for res in results:
             boxes = res.boxes
             for box in boxes:
-                detect = int(box.cls[0])
+                cls = int(box.cls[0])
+                cls = self.detection_classes[cls]
+                if cls in self.color:
+                    detect = True
         if detect is False:
             return False, results, clean_image
         else:
@@ -76,9 +79,9 @@ class PlateSegmentation:
 
         self.best_mask = None
 
-    def check_vehicle_plate(self, crop_vehicle_image: np.ndarray, mode: bool) -> Tuple[bool, Any]:
+    def check_vehicle_plate(self, crop_vehicle_image: np.ndarray) -> Tuple[bool, Any]:
         segment = None
-        results = self.segmentation_model(crop_vehicle_image, stream=mode, conf=0.85)
+        results = self.segmentation_model(crop_vehicle_image, stream=False, conf=0.60)
         for res in results:
             segment = res.masks
 
@@ -127,6 +130,11 @@ class PlateSegmentation:
         img = crop_plate_image.astype(np.uint8)
         tmp = img * composite.astype(np.uint8)
         return tmp
+
+    def calculate_mask_area(self, plate_mask: Any) -> int:
+        mask = torch.squeeze(plate_mask.data).cpu().numpy()
+        area = np.sum(mask)
+        return area
 
     def draw_plate_segmentation(self, vehicle_image: np.ndarray, plate_mask: Any, vehicle_bbox: List[int]) -> np.ndarray:
         mask = torch.squeeze(plate_mask.data).cpu().numpy() * 255
