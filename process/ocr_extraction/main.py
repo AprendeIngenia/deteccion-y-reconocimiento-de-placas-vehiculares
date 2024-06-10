@@ -45,25 +45,21 @@ class TextExtraction:
     def same_line(self, yi1, yi2):
         return abs(yi1 - yi2) < self.min_vertical_distance
 
-    def process_text_line(self, img, text_detected):
+    def process_text_line(self, text_detected) -> str:
         full_text = ''
         lines_list = []
         for i, text in enumerate(text_detected):
-            line_crop, xi, yi, xf, yf = self.ocr.extractor_text_line(img, text)
-            lines_list.append([xi, yi, xf, yf])
-            text = self.ocr.image_to_text(line_crop)
+            text_bbox, text_extracted, text_confidence = self.ocr.extractor_text_line(text)
+            lines_list.append(text_bbox)
             if i > 0:
                 if self.same_line(lines_list[i][1], lines_list[i - 1][1]):
                     full_text += ' '
                 else:
                     full_text += '\n'
-            full_text += text
+            full_text += text_extracted
         return full_text
 
     def text_extraction(self, plate_image_crop: np.ndarray) -> str:
         number_line_text, text_detected = self.ocr.text_detection(plate_image_crop)
-        if number_line_text > 1:
-            full_text = self.process_text_line(plate_image_crop, text_detected)
-        else:
-            full_text = self.ocr.image_to_text(plate_image_crop)
+        full_text = self.process_text_line(text_detected)
         return full_text

@@ -10,15 +10,11 @@ cap.set(3, 1280)
 cap.set(4, 720)
 
 if __name__ == "__main__":
-
     while True:
         ret, frame = cap.read()
-        cv2.imshow('stream', frame)
-        result_img, info = processor.process_vehicular_plate(frame)
-        if info:
-            print(info)
-        else:
-            cv2.imshow('result_process', result_img)
+        vehicle_image, license_plate, info = processor.process_vehicular_plate(frame, True, True)
+        print(f'license plate: {license_plate} \ninfo: {info}')
+        cv2.imshow('result_process', vehicle_image)
         t = cv2.waitKey(5)
         if t == 27:
             break
