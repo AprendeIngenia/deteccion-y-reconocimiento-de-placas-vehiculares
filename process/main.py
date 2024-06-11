@@ -50,7 +50,7 @@ class PlateRecognition:
             # step 8:
             plate_area = self.model_segmentation.calculate_mask_area(plate_mask)
 
-            if plate_area > 6000:
+            if 6500 > plate_area > 6000:
                 # step 9: process mask
                 processed_mask_image = self.model_segmentation.mask_processing(image_vehicle_crop, plate_mask)
 
